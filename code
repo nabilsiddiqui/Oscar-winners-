@@ -1,0 +1,183 @@
+Imports System.Data.OleDb
+Imports System.IO
+Public Class Form1
+Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+Dim con As New OleDb.OleDbConnection
+Dim cmd As New OleDb.OleDbCommand
+Dim rs As OleDb.OleDbDataReader
+Dim q As String
+ListBox1.Items.Clear()
+Try
+con = New OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=E:\oscar.mdb;")
+con.Open()
+cmd = con.CreateCommand
+q = "insert into oscar_data values ('" & TextBox2.Text & "','" & TextBox3.Text & "','" & TextBox4.Text & "','" & TextBox5.Text & "','" & TextBox6.Text & "')"
+cmd = New OleDbCommand(q, con)
+cmd.ExecuteNonQuery()
+MessageBox.Show("Succesfully Added")
+Catch ex As Exception
+MessageBox.Show("Invalid" & ex.Message)
+Finally
+con.Close()
+End Try
+Try
+con = New OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=E:\oscar.mdb;")
+con.Open()
+Dim da As New OleDbDataAdapter("select * from oscar_data ", con)
+Dim dt As New DataTable("oscar")
+da.Fill(dt)
+DataGridView1.DataSource = Nothing
+DataGridView1.DataSource = dt
+Catch ex As Exception
+MessageBox.Show("Invalid" & ex.Message)
+Finally
+con.Close()
+End Try
+Try
+con = New OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=E:\oscar.mdb;")
+con.Open()
+cmd = con.CreateCommand
+q = "select YearWon from oscar_data "
+cmd = New OleDbCommand(q, con)
+rs = cmd.ExecuteReader
+While rs.Read
+ListBox1.Items.Add(rs.Item(0))
+End While
+Catch ex As Exception
+MessageBox.Show("Invalid" & ex.Message)
+Finally
+con.Close()
+End Try
+TextBox2.Text = ""
+TextBox3.Text = ""
+TextBox4.Text = ""
+TextBox5.Text = ""
+TextBox6.Text = ""
+End Sub
+Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+Dim con As New OleDb.OleDbConnection
+Dim cmd As New OleDb.OleDbCommand
+Dim rs As OleDb.OleDbDataReader
+Dim q As String
+Try
+con = New OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=E:\oscar.mdb;")
+con.Open()
+Dim da As New OleDbDataAdapter("select * from oscar_data ", con)
+Dim dt As New DataTable("oscar")
+da.Fill(dt)
+DataGridView1.DataSource = Nothing
+DataGridView1.DataSource = dt
+Catch ex As Exception
+MessageBox.Show("Invalid" & ex.Message)
+Finally
+con.Close()
+End Try
+Try
+con = New OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=E:\oscar.mdb;")
+con.Open()
+cmd = con.CreateCommand
+q = "select YearWon from oscar_data "
+cmd = New OleDbCommand(q, con)
+rs = cmd.ExecuteReader
+While rs.Read
+ListBox1.Items.Add(rs.Item(0))
+End While
+Catch ex As Exception
+MessageBox.Show("Invalid" & ex.Message)
+Finally
+con.Close()
+End Try
+End Sub
+Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+Dim con As New OleDb.OleDbConnection
+Dim cmd As New OleDb.OleDbCommand
+If RadioButton1.Checked = True Then
+Try
+con = New OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=E:\oscar.mdb;")
+con.Open()
+Dim da As New OleDbDataAdapter("select * from oscar_data ", con)
+Dim dt As New DataTable("oscar")
+da.Fill(dt)
+DataGridView1.DataSource = Nothing
+DataGridView1.DataSource = dt
+Catch ex As Exception
+MessageBox.Show("Invalid" & ex.Message)
+Finally
+con.Close()
+End Try
+End If
+If RadioButton2.Checked = True Then
+Try
+con = New OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=E:\oscar.mdb;")
+con.Open()
+Dim da As New OleDbDataAdapter("select * from oscar_data where YearWon='" & TextBox1.Text & "'", con)
+Dim dt As New DataTable("oscar")
+da.Fill(dt)
+DataGridView1.DataSource = Nothing
+DataGridView1.DataSource = dt
+Catch ex As Exception
+MessageBox.Show("Invalid" & ex.Message)
+Finally
+con.Close()
+End Try
+End If
+End Sub
+Private Sub RadioButton1_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RadioButton1.CheckedChanged
+TextBox1.Text = ""
+End Sub
+Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+Dim con As New OleDb.OleDbConnection
+Dim cmd As New OleDb.OleDbCommand
+Dim rs As OleDb.OleDbDataReader
+Dim q, t As String
+t = ListBox1.Text
+  
+Try
+con = New OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=E:\oscar.mdb;")
+con.Open()
+cmd = con.CreateCommand
+q = "delete from oscar_data where YearWon='" & t & "'"
+cmd = New OleDbCommand(q, con)
+cmd.ExecuteNonQuery()
+MessageBox.Show("Succesfully Deleted")
+Catch ex As Exception
+MessageBox.Show("Invalid" & ex.Message)
+Finally
+con.Close()
+End Try
+ListBox1.Items.Clear()
+Try
+con = New OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=E:\oscar.mdb;")
+con.Open()
+cmd = con.CreateCommand
+q = "select YearWon from oscar_data "
+cmd = New OleDbCommand(q, con)
+rs = cmd.ExecuteReader
+While rs.Read
+ListBox1.Items.Add(rs.Item(0))
+End While
+Catch ex As Exception
+MessageBox.Show("Invalid" & ex.Message)
+Finally
+con.Close()
+End Try
+Try
+con = New OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=E:\oscar.mdb;")
+con.Open()
+Dim da As New OleDbDataAdapter("select * from oscar_data ", con)
+Dim dt As New DataTable("oscar")
+da.Fill(dt)
+DataGridView1.DataSource = Nothing
+DataGridView1.DataSource = dt
+Catch ex As Exception
+MessageBox.Show("Invalid" & ex.Message)
+Finally
+con.Close()
+End Try
+End Sub
+Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
+End
+End Sub
+End Class
+
+
